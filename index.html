@@ -23,6 +23,10 @@
         <p class="computer-Score"></p>
         <p class="gameCount"></p>
       </div>
+    <div>
+        <button id="resetButton">RESET GAME</button>
+    </div>
+
     <script>
         const pSelect = document.querySelector('.player-Selection')
         const pcSelect = document.querySelector('.computer-Selection')
@@ -33,11 +37,14 @@
         let computerScore = 0;
         
         const pScore = document.querySelector('.player-Score'); 
-        pScore.textContent = playerScore;
+        pScore.textContent = "Player: " + playerScore;
         const pcScore = document.querySelector('.computer-Score');
-        pcScore.textContent = computerScore;
+        pcScore.textContent = "Computer: " + computerScore;
         const gCount = document.querySelector('.gameCount');
-        gCount.textContent = gameCounter
+        gCount.textContent = "Game Counter: " + gameCounter;
+
+        const resetBtn = document.querySelector("#resetButton");
+        resetBtn.addEventListener('Click', )
 
         function computerPlay(){
             const randomNumber = Math.floor(Math.random()*3) + 1;
@@ -63,69 +70,35 @@
         scissorsBtn.addEventListener('click', () =>{ playRound("scissors", computerPlay() )});
             
         function playRound(playerSelection, computerSelection){
-            pSelect.textContent = "Player Choose: " + playerSelection
-            pcSelect.textContent = "Computer Choose: " + computerSelection
-            if (gameCounter > 5) {
-                result.textContent = "GAME OVER!";
-                pSelect.textContent = "";
-                pcSelect.textContent = "";
-            } else if (playerSelection === computerSelection) {
+            pSelect.textContent = "Player Choose: " + playerSelection;
+            pcSelect.textContent = "Computer Choose: " + computerSelection;
+            gameCounter++
+            if (playerSelection === computerSelection) {
                 result.textContent = "It's a Tie";
-            } else if (playerSelection === "rock" && computerSelection === "paper"){
-                result.textContent = "You Lose! Paper beats Rock";
-                pcScore.textContent = ++computerScore;
-            } else if (playerSelection === "rock" && computerSelection === "scissors"){
-                result.textContent = "You Win! Rock beats Scissors";
-                pScore.textContent = ++playerScore
-            } else if (playerSelection === "paper" && computerSelection === "scissors"){
-                result.textContent = "You Lose! Scissors beats Paper";
-                pcScore.textContent = ++computerScore
-            } else if (playerSelection === "paper" && computerSelection === "rock"){
-                result.textContent = "You win! Paper beats Rock";
-                pScore.textContent = ++playerScore
-            } else if (playerSelection === "scissors" && computerSelection === "rock"){
-                result.textContent = "You Lose! Rock beats Scissors";
-                pcScore.textContent = ++computerScore
-            } else if (playerSelection === "scissors" && computerSelection === "paper"){
-                result.textContent = "You win! Scissors beats Paper";
-                pScore.textContent = ++playerScore
-            } 
-            gCount.textContent = gameCounter++
+            } else if (playerSelection === "rock" && computerSelection === "paper" || playerSelection === "paper" && computerSelection === "scissors" || playerSelection === "scissors" && computerSelection === "rock"){
+                result.textContent = `You Lose! ${computerSelection} beats ${playerSelection}`;
+                pcScore.textContent = "Computer: " + ++computerScore;
+            } else if (playerSelection === "rock" && computerSelection === "scissors" || playerSelection === "paper" && computerSelection === "rock" || playerSelection === "scissors" && computerSelection === "paper"){
+                result.textContent = `You Win! ${playerSelection} beats ${computerSelection}`;
+                pScore.textContent = "Player: " + ++playerScore;
+            }
+            if (playerScore >= 5 || computerScore >= 5) {
+               result.textContent = "GAME OVER! " + declareWinner(playerScore, computerScore);
+               rockBtn.disabled = true;
+               paperBtn.disabled = true;
+               scissorsBtn.disabled = true;
+
+            }
         };
 
-
-
-/*         function game() {
-            let playerScore = 0;
-            let computerScore = 0;
-            for (let i= 0; i<3; i++){
-                const playerSelection = prompt("Input Rock, paper of scissors");
-                const computerSelection = computerPlay();
-                const result = playRound(playerSelection, computerSelection);
-                console.log(result);
-                if (result === "You win! Scissors beats Paper" || result === "You Win! Rock beats Scissors" || result === "You win! Paper beats Rock"){
-                    playerScore++;
-                    console.log("Player: " + playerScore);
-                    console.log("Computer: " + computerScore);
-                } else if (result === "It's a Tie"){
-                    console.log("Player: " + playerScore);
-                    console.log("Computer: " + computerScore)
-                } else {
-                    computerScore++
-                    console.log("Player: " + playerScore);
-                    console.log("Computer: " + computerScore);
-                }
+        function declareWinner(playerScore, computerScore) {
+            if (playerScore > computerScore) {
+                return "You Win!";
+            }  else {
+                return "You Lose!";
             }
-            console.log("Player final Score: " + playerScore + " // " + "Computer Final Score: " + computerScore);
-            if (playerScore > computerScore){
-                console.log("You win!")
-            } else if (computerScore > playerScore) {
-                console.log("You lose!")
-            } else {
-                console.log("It'a a tie!")
-            }
-        } */
-        //game();
+        } 
+
     </script>
 </body>
 </html> 
